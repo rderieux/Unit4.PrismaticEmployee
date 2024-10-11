@@ -41,7 +41,8 @@ router.put("/:id", async (req, res, next) => {
   }
 
   try {
-    if (!book) {
+    const employee = await prisma.employee.findUnique({ where: { id: +id } });
+    if (!employee) {
       next({ status: 400, message: `Employee with id: ${id} does not exist.` });
     }
 
@@ -50,6 +51,26 @@ router.put("/:id", async (req, res, next) => {
       data: { name },
     });
     res.json(updateEmployee);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.post("/", async (req, res, next) => {
+  const { name } = req.body;
+
+  if (!name) {
+    next({
+      status: 400,
+      message: "You must provide a name for a new employee.",
+    });
+  }
+
+  try {
+    const addEmployee = await prisma.employee.create({
+      data: { name },
+    });
+    res.json(addEmployee);
   } catch (error) {
     next(error);
   }

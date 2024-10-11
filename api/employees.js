@@ -43,7 +43,7 @@ router.put("/:id", async (req, res, next) => {
   try {
     const employee = await prisma.employee.findUnique({ where: { id: +id } });
     if (!employee) {
-      next({ status: 400, message: `Employee with id: ${id} does not exist.` });
+      next({ status: 404, message: `Employee with id: ${id} does not exist.` });
     }
 
     const updateEmployee = await prisma.employee.update({

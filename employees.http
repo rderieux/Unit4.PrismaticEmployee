@@ -1,4 +1,49 @@
 @host=http://localhost:3000
 
+### GET /
+GET {{host}}/
+
 ### GET /employees
 GET {{host}}/employees
+
+### GET existing employee
+GET {{host}}/employees/2
+
+### Update an Employee
+PUT {{host}}/employees/2
+Content-Type: application/json
+
+{
+    "name": "Janie Smith"
+}
+
+### Update an Employee fail case
+PUT {{host}}/employees/2
+Content-Type: application/json
+
+{
+    "ame": "Janie Smith"
+}
+
+### Add new employee
+POST {{host}}/employees
+Content-Type: application/json
+
+{
+    "name": "Ashley Jackson"
+}
+
+### Add new employee
+POST {{host}}/employees
+Content-Type: application/json
+
+{
+    "nam": "Ashley Jackson"
+}
+
+### Delete an employee
+DELETE {{host}}/employees/13
+
+### Delete an employee that doesn't exist
+DELETE {{host}}/employees/30
+

@@ -19,6 +19,13 @@ app.use((req, res, next) => {
 });
 
 // Error-handling middleware
-app.use((err, req, res, next) => {});
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(err.status ?? 500);
+  res.json(err.message ?? "Something went wrong on the server side.");
+});
 
 // Listener
+app.listen(PORT, () => {
+  console.log(`Listening on port#: ${PORT}...`);
+});

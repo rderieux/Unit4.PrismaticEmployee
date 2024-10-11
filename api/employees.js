@@ -75,3 +75,24 @@ router.post("/", async (req, res, next) => {
     next(error);
   }
 });
+
+router.delete("/:id", async (req, res, next) => {
+  const { id } = req.params;
+
+  try {
+    const employee = await prisma.employee.findUnique({
+      where: { id: +id },
+    });
+    if (!employee) {
+      next({
+        status: 404,
+        message: `An employee with id: ${id} does not exist.`,
+      });
+    }
+
+    await prisma.employee.delete({ where: { id: +id } });
+    res.sendStatus(204);
+  } catch (error) {
+    next(error);
+  }
+});

@@ -1,5 +1,5 @@
 const express = require("express");
-const prisma = require("../prisma");
+const prisma = require("../prisma/index.js");
 const router = express.Router();
 module.exports = router;
 
@@ -26,6 +26,30 @@ router.get("/:id", async (req, res, next) => {
     } else {
       next({ status: 404, message: `Employee with ${id} does not exist.` });
     }
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.put("/:id", async (req, res, next) => {
+  // Get id from params, name from body
+  const { id } = req.params;
+  const { name } = req.body;
+  // If there is no name send an error
+  if (!name) {
+    next({ status: 400, message: "An name must be sent with the request" });
+  }
+
+  try {
+    if (!book) {
+      next({ status: 400, message: `Employee with id: ${id} does not exist.` });
+    }
+
+    const updateEmployee = await prisma.employee.update({
+      where: { id: +id },
+      data: { name },
+    });
+    res.json(updateEmployee);
   } catch (error) {
     next(error);
   }
